@@ -1,0 +1,37 @@
+---
+- name: Install MySQL
+  hosts: mysql_server
+  become: true
+  tasks:
+    - name: Actualizar paquetes
+      apt:
+        update_cache: yes
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Instalar pymysql
+      pip:
+        name: pymysql
+        state: present
+
+    - name: Instalar MySQL
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Crear base de datos
+      mysql_db:
+        name: concierto
+        state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
+
+    - name: Crear usuario y contraseña
+      mysql_user:
+        name: test
+        password: 1234
+        priv: '*.*:ALL'
+        host: 10.0.0.254
+        state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
