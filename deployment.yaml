@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php
+  template:
+    metadata:
+      labels:
+        app: php
+    spec:
+      containers:
+      - name: php
+        image: acrfinlab.azurecr.io/final-project:icasado
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: acr-secret
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phpmyadmin
+  template:
+    metadata:
+      labels:
+        app: phpmyadmin
+    spec:
+      containers:
+      - name: phpmyadmin
+        image: phpmyadmin/phpmyadmin:5.2.1
+        env:
+        - name: PMA_HOST
+          value: 10.0.0.4
+        - name: PMA_USER
+          value: adminuser
+        - name: PMA_PASSWORD
+          value: "1234"
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name:  php-app
+spec:
+  selector:
+    app: php
+  ports:
+    - port: 80
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin-service
+spec:
+  selector:
+    app: phpmyadmin
+  ports:
+    - port: 80
+  type: LoadBalancer
