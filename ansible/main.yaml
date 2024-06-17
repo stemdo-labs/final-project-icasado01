@@ -1,11 +1,12 @@
 ---
-- name: Install MySQL
+- name: Configure MySQL server for remote access
   hosts: mysql_server
   become: true
   tasks:
     - name: Actualizar paquetes
       apt:
         update_cache: yes
+
     - name: Install pip
       apt:
         name: python3-pip
@@ -21,17 +22,47 @@
         name: mysql-server
         state: present
 
+    - name: Configurar MySQL bind-address y mysqlx-bind-address
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: '^bind-address'
+        line: 'bind-address = 0.0.0.0'
+        state: present
+      notify: restart mysql
+
+    - name: Configurar MySQLX bind-address
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: '^mysqlx-bind-address'
+        line: 'mysqlx-bind-address = 0.0.0.0'
+        state: present
+      notify: restart mysql
+
     - name: Crear base de datos
       mysql_db:
         name: concierto
         state: present
         login_unix_socket: /run/mysqld/mysqld.sock
 
-    - name: Crear usuario y contraseña
+    - name: Crear usuario y contraseña con acceso remoto
       mysql_user:
-        name: test
+        name: adminuser
         password: 1234
-        priv: '*.*:ALL'
-        host: 10.0.0.254
+        priv: '*.*:ALL PRIVILEGES'
+        host: '%'
         state: present
         login_unix_socket: /run/mysqld/mysqld.sock
+
+    - name: Aplicar privilegios
+      mysql_user:
+        name: adminuser
+        host: '%'
+        priv: '*.*:ALL PRIVILEGES'
+        state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
+
+  handlers:
+    - name: restart mysql
+      service:
+        name: mysql
+        state: restarted
