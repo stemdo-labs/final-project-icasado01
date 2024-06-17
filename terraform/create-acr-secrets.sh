@@ -4,7 +4,7 @@
 ACR_LOGIN_SERVER=$(terraform output -raw acr_login_server | xargs)
 ACR_ADMIN_USERNAME=$(terraform output -raw acr_admin_username | xargs)
 ACR_ADMIN_PASSWORD=$(terraform output -raw acr_admin_password | xargs)
-PUBLIC_IP=$(terraform output -raw public_ip_address | xargs)
+export PUBLIC_IP=$(terraform output -raw public_ip_address | xargs)
 DB_PRIVATE_IP=$(terraform output -raw vm_db_private_ip  | xargs)
 
 # Verifica que las variables no estén vacías
