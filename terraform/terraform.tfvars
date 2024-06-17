@@ -12,6 +12,9 @@ subnets = {
   "subnet-b" = {
     subnet_address_prefixes = ["10.0.1.0/24"]
   }
+  "subnet-aks" = {
+    subnet_address_prefixes = ["10.0.2.0/24"]
+  }
 }
 
 virtual_machine = {

@@ -38,7 +38,8 @@ resource "azurerm_network_interface" "nic1" {
   ip_configuration {
     name                          = "internal"
     subnet_id                     =  azurerm_subnet.subnets["subnet-a"].id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
+    private_ip_address            = "10.0.0.4"
   }
 }
 
@@ -162,35 +163,14 @@ resource "azurerm_kubernetes_cluster" "aks" {
     name = "default"
     node_count = 1
     vm_size = "Standard_B2s"
+    vnet_subnet_id = azurerm_subnet.subnets["subnet-aks"].id
   }
   identity {
     type = "SystemAssigned"
   }
-}
-
-# Crea un inventario de Terraform cada vez que se lanza
-
-data "template_file" "inventory" {
-  template = file("${path.module}/inventory.tpl")
-
-  vars = {
-    private_ip =  azurerm_network_interface.nic1.private_ip_address
-
-  }
-}
-
-resource "local_file" "inventory" {
-  content  = data.template_file.inventory.rendered
-  filename = "${path.module}/../app/bdModel.php"
-}
-
-# BdModel
-
-data "template_file" "bdModel" {
-  template = file("${path.module}/bdModel.tpl")
-
-  vars = {
-    public_ip =  azurerm_public_ip.pub-ip.ip_address
-
+    network_profile {
+    network_plugin     = "azure"
+    service_cidr       = "10.0.3.0/24"
+    dns_service_ip     = "10.0.3.10"
   }
 }
