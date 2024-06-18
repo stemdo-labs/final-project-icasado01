@@ -98,7 +98,7 @@ jobs:
         with:
           action: deploy
           manifests: |
-              ./deployment.yml
+              ./deployment.yaml
           images: |
               ${{ secrets.ACR_LOGIN_SERVER }}/final-project:test
           imagepullsecrets: |
