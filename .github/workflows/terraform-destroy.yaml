@@ -35,6 +35,14 @@ jobs:
           tf_actions_subcommand: 'init'
           tf_actions_working_dir: "./terraform"
 
+      - name: 'Terraform Plan'
+        id: plan
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: ${{ env.TF_VERSION }}
+          tf_actions_subcommand: 'plan'
+          tf_actions_working_dir: "./terraform"
+
       - name: 'Terraform Destroy'
         uses: hashicorp/terraform-github-actions@master
         with:
