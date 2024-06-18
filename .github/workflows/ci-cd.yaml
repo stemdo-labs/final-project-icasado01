@@ -74,7 +74,7 @@ jobs:
         with:
           registry: ${{ secrets.ACR_LOGIN_SERVER }}
           username: ${{ secrets.ACR_USERNAME }}
-          password: $ACR_SECRET
+          password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build the frontend image and push it to ACR
         uses: docker/build-push-action@v5
