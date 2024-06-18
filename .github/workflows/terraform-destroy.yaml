@@ -29,23 +29,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 'Terraform Init'
-        uses: hashicorp/terraform-github-actions@master
-        with:
-          tf_actions_version: ${{ env.TF_VERSION }}
-          tf_actions_subcommand: 'init'
-          tf_actions_working_dir: "./terraform"
-
-      - name: 'Terraform Plan'
-        id: plan
-        uses: hashicorp/terraform-github-actions@master
-        with:
-          tf_actions_version: ${{ env.TF_VERSION }}
-          tf_actions_subcommand: 'plan'
-          tf_actions_working_dir: "./terraform"
-
-      - name: 'Terraform Destroy'
-        uses: hashicorp/terraform-github-actions@master
-        with:
-          tf_actions_version: ${{ env.TF_VERSION }}
-          tf_actions_subcommand: 'destroy'
-          tf_actions_working_dir: "./terraform"
+        id: init
+        run: terraform -chdir=./terraform init        
+        
+      - name: Terraform Destroy
+        run: terraform -chdir=./terraform destroy -auto-approve
