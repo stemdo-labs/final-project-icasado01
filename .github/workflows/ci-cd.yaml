@@ -72,6 +72,11 @@ jobs:
           tags: ${{ secrets.ACR_LOGIN_SERVER }}/final-project:test
           file: ./Dockerfile
 
+      - name: Login via Azure Service Principal
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       # Set the target AKS cluster.
       - name: Set k8s context 
         uses: Azure/aks-set-context@v4
@@ -86,8 +91,8 @@ jobs:
           container-registry-url: ${{ secrets.ACR_LOGIN_SERVER }}
           container-registry-username: ${{ secrets.ACR_USERNAME }}
           container-registry-password: ${{ secrets.ACR_PASSWORD }}
-          
           secret-name: acr-secret
+          
       - name: Deploy AKS
         uses: Azure/k8s-deploy@v5
         with:
