@@ -81,4 +81,4 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.ACR_LOGIN_SERVER }}/final-project:test
-          file: https://github.com/stemdo-labs/final-project-icasado01/blob/5f50e28b687ff5243fc6064e61da3534fdbc9d27/Dockerfile
+          file: ./Dockerfile

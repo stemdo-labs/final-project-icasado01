@@ -1,9 +1,0 @@
-version: "3"
-
-services:
-  web:
-    image: php-test
-    ports:
-      - "8080:80"
-    volumes:
-      - ./app:/var/www/html
