@@ -16,3 +16,4 @@
 # Ignore all sensitive.auto.tfvars files
 **/sensitive.auto.tfvars
 **/.terraform.lock.hcl
+**/terraform/id_rsa
