@@ -17,9 +17,14 @@ env:
 
 jobs:
 
+  terraform-apply:
+    name: Terraform Apply
+    uses: ./.github/workflows/terraform-apply.yaml
+
   build-push:
     name: Build and Push Image
     runs-on: ubuntu-latest
+    needs: [terraform-apply]
 
     steps:
       - name: 'Checkout GitHub Action'
