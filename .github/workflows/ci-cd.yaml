@@ -103,3 +103,13 @@ jobs:
               ${{ secrets.ACR_LOGIN_SERVER }}/final-project:test
           imagepullsecrets: |
               acr-secrets
+  ansible:
+    name: Ansible deployment
+    runs-on: self-hosted
+
+    steps:
+      - name: Run Playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: main.yaml
+          directory: ./ansible/
