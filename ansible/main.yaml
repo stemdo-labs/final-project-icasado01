@@ -46,8 +46,8 @@
 
     - name: Crear usuario y contraseña con acceso remoto
       mysql_user:
-        name: adminuser
-        password: 1234
+        name: "{{ db_username }}"
+        password: "{{ db_password }}"
         priv: '*.*:ALL PRIVILEGES'
         host: '%'
         state: present
@@ -55,7 +55,7 @@
 
     - name: Aplicar privilegios
       mysql_user:
-        name: adminuser
+        name: "{{ db_username }}"
         host: '%'
         priv: '*.*:ALL PRIVILEGES'
         state: present

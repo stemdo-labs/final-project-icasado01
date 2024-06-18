@@ -1,0 +1,11 @@
+name: BD Backup
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+
+jobs:
+  backup:
+    runs-on: self-hosted
+    steps:
+      - name: Create backup
