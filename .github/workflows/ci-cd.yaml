@@ -1,4 +1,4 @@
-name: Deploy Terraform to Azure
+name: CI-CD
 
 on:
   workflow_dispatch:
@@ -71,3 +71,30 @@ jobs:
           push: true
           tags: ${{ secrets.ACR_LOGIN_SERVER }}/final-project:test
           file: ./Dockerfile
+
+      # Set the target AKS cluster.
+      - name: Set k8s context 
+        uses: Azure/aks-set-context@v4
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          cluster-name: finlab-aks
+          resource-group: rg-icasado-dvfinlab
+
+      - name: Set AKS secrets
+        uses: Azure/k8s-create-secret@v4
+        with:
+          container-registry-url: ${{ secrets.ACR_LOGIN_SERVER }}
+          container-registry-username: ${{ secrets.ACR_USERNAME }}
+          container-registry-password: ${{ secrets.ACR_PASSWORD }}
+          
+          secret-name: acr-secret
+      - name: Deploy AKS
+        uses: Azure/k8s-deploy@v5
+        with:
+          action: deploy
+          manifests: |
+              ./deployment.yml
+          images: |
+              ${{ secrets.ACR_LOGIN_SERVER }}/final-project:test
+          imagepullsecrets: |
+              acr-secrets
