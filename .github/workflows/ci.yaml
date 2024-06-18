@@ -1,7 +1,10 @@
-name: CI-CD
+name: CI
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+    - main
     
 permissions:
       id-token: write
@@ -73,33 +76,3 @@ jobs:
               ${{ secrets.ACR_LOGIN_SERVER }}/final-project:${{ env.VERSION }}
           imagepullsecrets: |
               acr-secrets
-  ansible:
-    name: Ansible deployment
-    runs-on: self-hosted
-
-    steps:
-      - name: 'Checkout GitHub Action'
-        uses: actions/checkout@v4
-
-      - name: Install Ansible
-        run: |
-          sudo apt update -y && sudo apt upgrade -y && sudo apt install ansible -y
-      - name: Install mysql-client
-        run: |
-          sudo apt install mysql-client -y
-
-      - name: Run Playbook
-        uses: dawidd6/action-ansible-playbook@v2
-        with:
-          playbook: main.yaml
-          directory: ./ansible/
-          key: ${{secrets.SSH_PRIVATE_KEY}}
-          inventory: |
-            [mysql_server]
-            vm-db ansible_host=10.0.0.4
-
-            [all:vars]
-            ansible_user=vm1
-          options: |
-            --inventory .inventory.ini
-            --extra-vars db_username=${{secrets.DB_USERNAME }} db_password=${{secrets.DB_PASSWORD}}
