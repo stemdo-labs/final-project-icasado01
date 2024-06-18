@@ -11,3 +11,7 @@ jobs:
       - name: Create backup
         run: |
           mysqldump -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -h 10.0.0.4 > backup.sql
+  
+      - name: Store Backup
+        run: |
+          az storage blob upload --account-name ${{ secrets.AZURE_STA }} --container-name backup --file ./backup.sql --name "backup_$(date +%Y%m%d%H%M%S).sql"
