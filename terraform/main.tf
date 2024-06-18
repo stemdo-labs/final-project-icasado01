@@ -5,13 +5,13 @@ terraform {
       version = "3.103.0"
     }
   }
-}
 
-backend "azurerm" {
+  backend "azurerm" {
   resource_group_name  = "rg-icasado-dvfinlab"
   storage_account_name = "staicasadodvfinlab"
   container_name       = "tfstate"
   key                  = "terraform.tfstate"
+}
 }
 
 provider "azurerm" {
