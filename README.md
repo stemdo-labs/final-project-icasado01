@@ -21,7 +21,7 @@ La base de datos se creará utilizando phpMyAdmin, que será accesible mediante 
 
 ![image](https://github.com/stemdo-labs/final-project-icasado01/assets/166407751/698d7d81-3ff9-40be-8cea-3010ba265444)
 
-
+---
 
 ## Vista de la aplicación
 ### Index de la aplicación
