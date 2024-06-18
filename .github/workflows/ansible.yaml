@@ -33,4 +33,4 @@ jobs:
             ansible_user=vm1
           options: |
             --inventory .inventory.ini
-            --extra-vars db_username=${{secrets.DB_USERNAME }} db_password=${{secrets.DB_PASSWORD}}
+            --extra-vars "db_username=${{secrets.DB_USERNAME }} db_password=${{secrets.DB_PASSWORD}}"
