@@ -7,6 +7,13 @@ terraform {
   }
 }
 
+backend "azurerm" {
+  resource_group_name  = "rg-plopez-dvfinlab"
+  storage_account_name = "staplopezdvfinlab"
+  container_name       = "tfstate"
+  key                  = "terraform.tfstate"
+}
+
 provider "azurerm" {
   features {}
 }
