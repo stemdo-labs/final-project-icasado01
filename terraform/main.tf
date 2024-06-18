@@ -102,11 +102,6 @@ resource "azurerm_network_security_rule" "deny_all" {
 
 # VIRTUAL MACHINES
 
-resource "tls_private_key" "ssh_key" {
-    algorithm = "RSA"
-    rsa_bits = 2048
-}
-
 resource "azurerm_linux_virtual_machine" "vms" {
   for_each                = var.virtual_machine
   name                    = each.key
@@ -116,12 +111,12 @@ resource "azurerm_linux_virtual_machine" "vms" {
   admin_password          = each.value.password
   size                    = each.value.vm_size
   disable_password_authentication = false
-
+  
   admin_ssh_key {
-    username              = each.value.username
-    public_key            = tls_private_key.ssh_key.public_key_openssh
+    username   = each.value.username
+    public_key = file("./id_rsa.pub")
   }
-
+  
   network_interface_ids   = [
     lookup(local.network_interface_map, each.key)
   ]
