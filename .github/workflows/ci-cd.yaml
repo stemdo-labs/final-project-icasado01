@@ -7,39 +7,78 @@ permissions:
       id-token: write
       contents: read
 
+env:
+  ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+  ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+  ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+
 jobs:
-  terraform:
-    name: 'Terraform'
+  # terraform:
+  #   name: 'Terraform'
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  #     ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+  #     ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  #     TF_VERSION: 1.5.7
+
+  #   steps:
+  #     - name: 'Checkout GitHub Action'
+  #       uses: actions/checkout@v4
+
+  #     - name: 'Terraform Init'
+  #       uses: hashicorp/terraform-github-actions@master
+  #       with:
+  #         tf_actions_version: ${{ env.TF_VERSION }}
+  #         tf_actions_subcommand: 'init'
+  #         tf_actions_working_dir: "./terraform"
+
+  #     - name: 'Terraform Plan'
+  #       id: plan
+  #       uses: hashicorp/terraform-github-actions@master
+  #       with:
+  #         tf_actions_version: ${{ env.TF_VERSION }}
+  #         tf_actions_subcommand: 'plan'
+  #         tf_actions_working_dir: "./terraform"
+
+  #     - name: 'Terraform Apply'
+  #       uses: hashicorp/terraform-github-actions@master
+  #       with:
+  #         tf_actions_version: ${{ env.TF_VERSION }}
+  #         tf_actions_subcommand: 'apply'
+  #         tf_actions_working_dir: "./terraform"
+
+  build-push:
+    name: Build and Push Image
     runs-on: ubuntu-latest
-    env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      TF_VERSION: 1.5.7
+    needs: [terraform]
 
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v4
 
-      - name: 'Terraform Init'
-        uses: hashicorp/terraform-github-actions@master
+      - name: Login via Azure Service Principal
+        uses: azure/login@v1
         with:
-          tf_actions_version: ${{ env.TF_VERSION }}
-          tf_actions_subcommand: 'init'
-          tf_actions_working_dir: "./terraform"
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: 'Terraform Plan'
-        id: plan
-        uses: hashicorp/terraform-github-actions@master
-        with:
-          tf_actions_version: ${{ env.TF_VERSION }}
-          tf_actions_subcommand: 'plan'
-          tf_actions_working_dir: "./terraform"
+      - name: Run Azure CLI command and set output
+        id: get-acr-password
+        run: |
+          ACR_PASSWORD=$(az acr credential show --name acrfinlab --query passwords[0].value -o tsv)
+          echo "::set-output name=acr_password::$ACR_PASSWORD"
 
-      - name: 'Terraform Apply'
-        uses: hashicorp/terraform-github-actions@master
+      - name: Docker Login
+        uses: azure/docker-login@v1
         with:
-          tf_actions_version: ${{ env.TF_VERSION }}
-          tf_actions_subcommand: 'apply'
-          tf_actions_working_dir: "./terraform"
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build the frontend image and push it to ACR
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ secrets.ACR_LOGIN_SERVER }}/final-project:test
+          file: https://github.com/stemdo-labs/final-project-icasado01/blob/5f50e28b687ff5243fc6064e61da3534fdbc9d27/Dockerfile
