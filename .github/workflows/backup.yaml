@@ -9,3 +9,5 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Create backup
+        run: |
+          mysqldump -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -h 10.0.0.4 > backup.sql
