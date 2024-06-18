@@ -110,11 +110,7 @@ jobs:
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v4
-
-      - name: Send SSH Key
-        run: |
-          ssh-send-key vm1@
-
+        
       - name: Run Playbook
         uses: dawidd6/action-ansible-playbook@v2
         with:
