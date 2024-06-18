@@ -11,6 +11,7 @@ WORKDIR /var/www/html/
  
 # Dar permisos adecuados a los archivos
 RUN chown -R www-data:www-data /var/www/html
+RUN chmod 755 -R /var/www/html
  
 # Exponer el puerto 80
 EXPOSE 80
