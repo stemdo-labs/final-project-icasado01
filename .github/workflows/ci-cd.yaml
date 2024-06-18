@@ -58,17 +58,6 @@ jobs:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v4
 
-      - name: Login via Azure Service Principal
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Run Azure CLI command and set output
-        id: get-acr-password
-        run: |
-          ACR_SECRET=$(az acr credential show --name acrfinlab --query passwords[0].value -o tsv)
-          echo "ACR_SECRET=ACR_PASSWORD" >> $GITHUB_OUTPUT
-
       - name: Docker Login
         uses: docker/login-action@v3
         with:
