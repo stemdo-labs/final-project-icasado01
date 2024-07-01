@@ -23,16 +23,16 @@ variable "vnet_address_space" {
 
 # SUBNET
 
-variable "subnets" {
-  type = map(object({
-    subnet_address_prefixes = list(string)
-  }))
-}
+#variable "subnets" {
+#  type = map(object({
+#    subnet_address_prefixes = list(string)
+#  }))
+#}
 
-variable "subnet_id" {
-  type = string
-  sensitive = true
-}
+#variable "subnet_id" {
+#  type = string
+#  sensitive = true
+#}
 
 # VIRTUAL MACHINES
 
