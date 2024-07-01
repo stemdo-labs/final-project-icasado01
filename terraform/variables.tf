@@ -5,21 +5,21 @@ variable "resource_group_name" {
 
 variable "location" {
   type        = string
-  default     = "West Europe"
+  default     = UK South"
 }
 
 # VNET
 
-variable "vnet_name" {
-  type        = string
-  description = "Nombre de la Vnet"
-  nullable    = false
-}
+#variable "vnet_name" {
+#  type        = string
+#  description = "Nombre de la Vnet"
+#  nullable    = false
+#}
 
-variable "vnet_address_space" {
-  type        = list(any)
-  description = "Direccion de la Vnet"
-}
+#variable "vnet_address_space" {
+#  type        = list(any)
+#  description = "Direccion de la Vnet"
+#}
 
 # SUBNET
 
@@ -27,11 +27,6 @@ variable "vnet_address_space" {
 #  type = map(object({
 #    subnet_address_prefixes = list(string)
 #  }))
-#}
-
-#variable "subnet_id" {
-#  type = string
-#  sensitive = true
 #}
 
 # VIRTUAL MACHINES
