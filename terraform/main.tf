@@ -21,7 +21,6 @@ provider "azurerm" {
 # RECURSOS DE RED
 
 resource "azurerm_network_interface" "nic1" {
-  depends_on = [ azurerm_virtual_network.vnet ]
   name                = "vm-db-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -35,7 +34,6 @@ resource "azurerm_network_interface" "nic1" {
 }
 
 resource "azurerm_network_interface" "nic2" {
-  depends_on = [ azurerm_virtual_network.vnet ]
   name                = "vm-backup-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
