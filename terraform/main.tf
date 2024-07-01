@@ -7,8 +7,8 @@ terraform {
   }
 
   backend "azurerm" {
-  resource_group_name  = "rg-icasado-dvfinlab"
-  storage_account_name = "staicasadodvfinlab"
+  resource_group_name  = var.resource_group_name
+  storage_account_name = "staicasado"
   container_name       = "tfstate"
   key                  = "terraform.tfstate"
 }
@@ -20,22 +20,6 @@ provider "azurerm" {
 
 # RECURSOS DE RED
 
-resource "azurerm_virtual_network" "vnet" {
-  name                = var.vnet_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  address_space       = var.vnet_address_space
-}
-
-resource "azurerm_subnet" "subnets" {
-  depends_on = [ azurerm_virtual_network.vnet ]
-  for_each = var.subnets
-  name = each.key
-  virtual_network_name = var.vnet_name
-  address_prefixes = each.value["subnet_address_prefixes"]
-  resource_group_name = var.resource_group_name
-}
-
 resource "azurerm_network_interface" "nic1" {
   depends_on = [ azurerm_virtual_network.vnet ]
   name                = "vm-db-nic"
@@ -44,9 +28,9 @@ resource "azurerm_network_interface" "nic1" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     =  azurerm_subnet.subnets["subnet-a"].id
+    subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Static"
-    private_ip_address            = "10.0.0.4"
+    private_ip_address            = "10.0.28.4"
   }
 }
 
@@ -58,7 +42,7 @@ resource "azurerm_network_interface" "nic2" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.subnets["subnet-b"].id
+    subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.pub-ip.id
   }
