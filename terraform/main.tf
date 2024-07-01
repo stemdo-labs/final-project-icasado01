@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "azurerm" {
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = "rg-icasado"
   storage_account_name = "staicasado"
   container_name       = "tfstate"
   key                  = "terraform.tfstate"
