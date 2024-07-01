@@ -26,6 +26,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       TF_VERSION: 1.5.7
+      TF_VAR_AZURE_SUBNET_ID: ${{ secrets.AZURE_SUBNET_ID }}
 
     steps:
       - name: 'Checkout GitHub Action'
