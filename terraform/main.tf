@@ -152,7 +152,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     name = "default"
     node_count = 1
     vm_size = "Standard_B2s"
-    vnet_subnet_id = azurerm_subnet.subnets["subnet-aks"].id
+    vnet_subnet_id = var.subnet_aks_id
   }
   identity {
     type = "SystemAssigned"
