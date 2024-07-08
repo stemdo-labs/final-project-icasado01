@@ -29,6 +29,9 @@ variable "location" {
 #  }))
 #}
 
+variable "subnet_id" {
+  type = string
+
 # VIRTUAL MACHINES
 
 variable "virtual_machine" {
