@@ -21,7 +21,7 @@ jobs:
     - name: Read version from composer.json
       id: read_version
       run: |
-        VERSION=$(jq -r '.version' composer.json)
+        VERSION=$(jq -r '.version' ./app/composer.json)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
 
     - name: Create GitHub Release
