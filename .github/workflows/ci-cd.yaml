@@ -8,8 +8,6 @@ on:
         options: 
         - DEV
         - PRO
-      Release:
-        type: string
     
 permissions:
       id-token: write
