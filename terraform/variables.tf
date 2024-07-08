@@ -29,11 +29,6 @@ variable "location" {
 #  }))
 #}
 
-variable "subnet_id" {
-  type = string
-  sensitive = true
-}
-
 variable "subnet_aks_id" {
   type = string
   sensitive = true
