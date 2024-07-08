@@ -1,6 +1,6 @@
 on:
   push:
-    branch:
+    branches:
       - main
     # Sequence of patterns matched against refs/tags
     tags:
