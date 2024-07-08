@@ -38,5 +38,3 @@ La base de datos se creará utilizando phpMyAdmin, que será accesible mediante 
 
 
 
-
-
