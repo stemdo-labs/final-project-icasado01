@@ -21,7 +21,7 @@ provider "azurerm" {
 # RECURSOS DE RED
 
 data "azurerm_virtual_network" "common-vnet-bootcamp" {
-  name                 = "sn-icasado"  
+  name                 = "vnet-common-bootcamp"  
   resource_group_name  = "final-project-common"
 }
 
