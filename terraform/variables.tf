@@ -29,11 +29,6 @@ variable "location" {
 #  }))
 #}
 
-variable "subnet_aks_id" {
-  type = string
-  sensitive = true
-}
-
 # VIRTUAL MACHINES
 
 variable "virtual_machine" {
