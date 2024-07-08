@@ -78,13 +78,26 @@ jobs:
           container-registry-password: ${{ secrets.ACR_PASSWORD }}
           secret-name: acr-secret
           
-      - name: Deploy AKS
+      - name: Deploy to AKS (DEV)
+        if: ${{ github.event.inputs.environment == 'DEV' }}
         uses: Azure/k8s-deploy@v5
         with:
           action: deploy
           manifests: |
-              ./deployment.yaml
+            ./deployment.yaml
           images: |
-              ${{ secrets.ACR_LOGIN_SERVER }}/final-project:${{ env.VERSION }}
+            ${{ secrets.ACR_LOGIN_SERVER }}/final-project:${{ env.VERSION }}-alpha
           imagepullsecrets: |
-              acr-secrets
+            acr-secrets
+  
+      - name: Deploy to AKS (PRO)
+        if: ${{ github.event.inputs.environment == 'PRO' }}
+        uses: Azure/k8s-deploy@v5
+        with:
+          action: deploy
+          manifests: |
+            ./deployment.yaml
+          images: |
+            ${{ secrets.ACR_LOGIN_SERVER }}/final-project:${{ env.VERSION }}
+          imagepullsecrets: |
+            acr-secrets
