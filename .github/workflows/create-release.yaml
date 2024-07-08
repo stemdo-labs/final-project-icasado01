@@ -1,5 +1,4 @@
-name: Create Release from Composer Version
-
+name: Create Release
 on:
   push:
     branches:
