@@ -38,7 +38,7 @@ resource "azurerm_network_interface" "nic1" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = data.azurerm_subnet.sn_icasado.id
+    subnet_id                     = data.azurerm_subnet.sn-icasado.id
     private_ip_address_allocation = "Static"
     private_ip_address            = "10.0.28.4"
   }
@@ -51,7 +51,7 @@ resource "azurerm_network_interface" "nic2" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = var.subnet_id
+    subnet_id                     = data.azurerm_subnet.sn-icasado.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.pub-ip.id
   }
@@ -152,25 +152,25 @@ resource "azurerm_container_registry" "acr" {
 
 # AKS
 
-resource "azurerm_kubernetes_cluster" "aks" {
-  depends_on = [ azurerm_container_registry.acr ]
-  name = "finlab-aks"
-  location = var.location
-  resource_group_name = var.resource_group_name
-  dns_prefix = "dns-aks"
-  sku_tier = "Standard"
-  default_node_pool {
-    name = "default"
-    node_count = 1
-    vm_size = "Standard_B2s"
-    vnet_subnet_id = var.subnet_aks_id
-  }
-  identity {
-    type = "SystemAssigned"
-  }
-    network_profile {
-    network_plugin     = "azure"
-    service_cidr       = "10.0.3.0/24"
-    dns_service_ip     = "10.0.3.10"
-  }
-}
+#resource "azurerm_kubernetes_cluster" "aks" {
+#  depends_on = [ azurerm_container_registry.acr ]
+#  name = "finlab-aks"
+#  location = var.location
+#  resource_group_name = var.resource_group_name
+#  dns_prefix = "dns-aks"
+#  sku_tier = "Standard"
+#  default_node_pool {
+#    name = "default"
+#    node_count = 1
+#    vm_size = "Standard_B2s"
+#    vnet_subnet_id = var.subnet_aks_id
+#  }
+#  identity {
+#    type = "SystemAssigned"
+#  }
+#    network_profile {
+#    network_plugin     = "azure"
+#    service_cidr       = "10.0.3.0/24"
+#    dns_service_ip     = "10.0.3.10"
+#  }
+#}
