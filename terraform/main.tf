@@ -20,20 +20,20 @@ provider "azurerm" {
 
 # RECURSOS DE RED
 
-data "azurerm_virtual_network" "common_vnet" {
+data "azurerm_virtual_network" "common-vnet-bootcamp" {
   name                 = "sn-icasado"  
   resource_group_name  = "final-project-common"
 }
 
 data "azurerm_subnet" "sn-icasado" {
   name                 = "sn-icasado"
-  virtual_network_name = data.azurerm_virtual_network.common_vnet.name
+  virtual_network_name = data.azurerm_virtual_network.common-vnet-bootcamp.name
   resource_group_name  = "final-project-common"
 }
 
 data "azurerm_subnet" "sn-common-aks-project" {
   name                 = "sn-common-aks-project"
-  virtual_network_name = data.azurerm_virtual_network.common_vnet.name
+  virtual_network_name = data.azurerm_virtual_network.common-vnet-bootcamp.name
   resource_group_name  = "final-project-common"
 }
 
