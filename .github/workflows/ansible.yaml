@@ -27,7 +27,7 @@ jobs:
           key: ${{secrets.SSH_PRIVATE_KEY}}
           inventory: |
             [mysql_server]
-            vm-db ansible_host=10.0.0.4
+            vm-db ansible_host=10.0.28.4
 
             [all:vars]
             ansible_user=vm1
