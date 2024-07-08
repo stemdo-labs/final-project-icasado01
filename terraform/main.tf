@@ -20,6 +20,12 @@ provider "azurerm" {
 
 # RECURSOS DE RED
 
+data "azurerm_subnet" "sn-icasado" {
+  name                 = "sn-icasado"
+  virtual_network_name = "vnet-common-bootcamp"
+  resource_group_name  = "final-project-common"
+}
+
 resource "azurerm_network_interface" "nic1" {
   name                = "vm-db-nic"
   location            = var.location
@@ -27,7 +33,7 @@ resource "azurerm_network_interface" "nic1" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = var.subnet_id
+    subnet_id                     = data.azurerm_subnet.sn.icasado.id
     private_ip_address_allocation = "Static"
     private_ip_address            = "10.0.28.4"
   }
