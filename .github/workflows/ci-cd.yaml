@@ -3,8 +3,8 @@ name: CI-CD
 on:
   workflow_dispatch:
     inputs:
-      name:
-        type: Environment
+      Environment:
+        type: choice
         options: 
         - DEV
         - PRO
