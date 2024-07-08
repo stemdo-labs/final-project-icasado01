@@ -41,7 +41,16 @@ jobs:
           VERSION=$(jq -r '.version' app/composer.json)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Build the frontend image and push it to ACR
+      - name: Build the frontend image and push it to ACR (DEV)
+        if: ${{ github.event.inputs.environment == 'DEV' }}
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ secrets.ACR_LOGIN_SERVER }}/final-project:${{ env.VERSION }}-alpha
+          file: ./Dockerfile
+
+      - name: Build the frontend image and push it to ACR (PRO)
+        if: ${{ github.event.inputs.environment == 'PRO' }}
         uses: docker/build-push-action@v5
         with:
           push: true
