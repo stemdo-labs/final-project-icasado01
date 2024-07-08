@@ -5,7 +5,7 @@ variable "resource_group_name" {
 
 variable "location" {
   type        = string
-  default     = UK South"
+  default     = "UK South"
 }
 
 # VNET
