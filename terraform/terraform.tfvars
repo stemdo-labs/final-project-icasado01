@@ -3,8 +3,8 @@ location                      = "UK South"
 
 # VNET
 
-vnet_name                    = "vnet_finlab"
-vnet_address_space           = [ "10.0.0.0/16" ]
+#vnet_name                    = "vnet_finlab"
+#vnet_address_space           = [ "10.0.0.0/16" ]
 
 #subnets = {
 #  "subnet-a" = {
