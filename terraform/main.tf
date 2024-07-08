@@ -21,12 +21,18 @@ provider "azurerm" {
 # RECURSOS DE RED
 
 data "azurerm_virtual_network" "common_vnet" {
-  name                = var.vnet_name
+  name                 = "sn-icasado"  
   resource_group_name  = "final-project-common"
 }
 
 data "azurerm_subnet" "sn-icasado" {
   name                 = "sn-icasado"
+  virtual_network_name = data.azurerm_virtual_network.common_vnet.name
+  resource_group_name  = "final-project-common"
+}
+
+data "azurerm_subnet" "sn-common-aks-project" {
+  name                 = "sn-common-aks-project"
   virtual_network_name = data.azurerm_virtual_network.common_vnet.name
   resource_group_name  = "final-project-common"
 }
