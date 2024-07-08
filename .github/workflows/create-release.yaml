@@ -39,3 +39,5 @@ jobs:
           This release was automatically generated from the version defined in `composer.json`.
         draft: false
         prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
