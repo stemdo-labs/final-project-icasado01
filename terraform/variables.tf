@@ -43,5 +43,3 @@ variable "virtual_machine" {
     password          = string
   }))
 }
-
-}
