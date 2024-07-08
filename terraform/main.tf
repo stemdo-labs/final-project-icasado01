@@ -40,7 +40,7 @@ data "azurerm_subnet" "sn-common-aks-project" {
 resource "azurerm_network_interface" "nic1" {
   name                = "vm-db-nic"
   location            = var.location
-  resource_group_name  = "final-project-common"
+  resource_group_name  = var.resource_group_name
 
   ip_configuration {
     name                          = "internal"
