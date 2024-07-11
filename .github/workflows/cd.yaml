@@ -5,8 +5,8 @@ on:
     inputs:
       Environment:
         type: choice
-        options:
         default: "DEV" 
+        options:
         - DEV
         - PRO
     
