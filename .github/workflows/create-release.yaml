@@ -10,6 +10,8 @@ on:
 
 jobs:
   create-branch:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
 
     steps:
