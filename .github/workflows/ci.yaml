@@ -1,13 +1,10 @@
-name: CI-CD
+name: CD
 
 on:
   workflow_dispatch:
-    inputs:
-      Environment:
-        type: choice
-        options: 
-        - DEV
-        - PRO
+
+  push:
+    branches: [ release/v* ]
     
 permissions:
       id-token: write
@@ -20,8 +17,8 @@ env:
 
 jobs:
 
-  build-push:
-    name: Build and Push Image
+  CI:
+    name: CI - Build and Push Image
     runs-on: ubuntu-latest
 
     steps:
@@ -41,20 +38,16 @@ jobs:
           VERSION=$(jq -r '.version' app/composer.json)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Build the frontend image and push it to ACR (DEV)
-        if: ${{ github.event.inputs.environment == 'DEV' }}
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: ${{ secrets.ACR_LOGIN_SERVER }}/final-project:${{ env.VERSION }}-alpha
-          file: ./Dockerfile
+      - name: Extract branch name
+        shell: bash
+        run: echo "BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
+        id: extract_branch
 
       - name: Build the frontend image and push it to ACR (PRO)
-        if: ${{ github.event.inputs.environment == 'PRO' }}
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ secrets.ACR_LOGIN_SERVER }}/final-project:${{ env.VERSION }}
+          tags: ${{ secrets.ACR_LOGIN_SERVER }}/final-project:${{ env.BRANCH }}-${{ env.VERSION }}
           file: ./Dockerfile
 
       - name: Login via Azure Service Principal
@@ -79,25 +72,12 @@ jobs:
           secret-name: acr-secret
           
       - name: Deploy to AKS (DEV)
-        if: ${{ github.event.inputs.environment == 'DEV' }}
         uses: Azure/k8s-deploy@v5
         with:
           action: deploy
           manifests: |
             ./deployment.yaml
           images: |
-            ${{ secrets.ACR_LOGIN_SERVER }}/final-project:${{ env.VERSION }}-alpha
-          imagepullsecrets: |
-            acr-secrets
-  
-      - name: Deploy to AKS (PRO)
-        if: ${{ github.event.inputs.environment == 'PRO' }}
-        uses: Azure/k8s-deploy@v5
-        with:
-          action: deploy
-          manifests: |
-            ./deployment.yaml
-          images: |
-            ${{ secrets.ACR_LOGIN_SERVER }}/final-project:${{ env.VERSION }}
+            tags: ${{ secrets.ACR_LOGIN_SERVER }}/final-project:${{ env.BRANCH }}-${{ env.VERSION }}
           imagepullsecrets: |
             acr-secrets
