@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Release Branch
-        uses: stemdo-labs/actions/create-release/action.yaml@latest
+        uses: stemdo-labs/actions/create-release/
         with:
           release_version: ${{ github.event.inputs.release_version }}
         env:
