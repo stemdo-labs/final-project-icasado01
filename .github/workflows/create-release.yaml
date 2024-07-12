@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Release Branch
-        uses: icasado01/create-release/create-release/action.yaml@v1
+        uses: icasado01/create-release/create-release@v1
         with:
           release_version: ${{ github.event.inputs.release_version }}
         env:
