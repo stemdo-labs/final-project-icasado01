@@ -15,5 +15,5 @@ jobs:
       - name: Create Release Branch
         uses: icasado01/create-release/create-release@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           release_version: ${{ github.event.inputs.release_version }}
