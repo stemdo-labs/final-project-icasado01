@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Release Branch
-        uses: icasado01/create-release/create-release@v1
+        uses: stemdo-labs/actions/create-release/create-release@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           release_version: ${{ github.event.inputs.release_version }}
