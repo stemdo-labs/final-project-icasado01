@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Release Branch
-        uses: stemdo-labs/actions/create-release/create-release@main
+        uses: stemdo-labs/actions/create-release@main
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           release_version: ${{ github.event.inputs.release_version }}
