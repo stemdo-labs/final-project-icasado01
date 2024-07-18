@@ -37,8 +37,8 @@ jobs:
         uses: Azure/aks-set-context@v4
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
-          cluster-name: finlab-aks
-          resource-group: rg-icasado-dvfinlab
+          cluster-name: aksbootcampwe01
+          resource-group: final-project-common
 
       - name: Set AKS secrets
         uses: Azure/k8s-create-secret@v4
